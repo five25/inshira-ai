@@ -6,7 +6,7 @@ import { AppSidebar } from './_components/app-sidebar'
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
    const session = await auth()
 
-   if (!session) {
+   if (!session?.user) {
       redirect('/login')
    }
 
