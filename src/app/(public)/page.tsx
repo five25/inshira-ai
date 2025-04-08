@@ -1,14 +1,17 @@
-import { Button } from '@/components/ui/button'
+import { auth } from '@/auth'
+
 import { Cta } from './_components/cta'
 import Features from './_components/features'
 import { Footer } from './_components/footer'
 import { Header } from './_components/header'
 import { Hero } from './_components/hero'
 
-export default function Home() {
+export default async function Home() {
+   const session = await auth()
+
    return (
       <div className='min-h-screen bg-gradient-to-b from-background to-secondary'>
-         <Header />
+         <Header session={session} />
          <Hero />
          <Features />
          <Cta />

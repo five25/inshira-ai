@@ -39,6 +39,7 @@ import { NavUser } from './nav-user'
 import { Logo } from '@/components/shared/logo'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
+import { Session } from 'next-auth'
 
 const data = {
    user: {
@@ -92,7 +93,11 @@ const data = {
    ]
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+type SidebarProps = React.ComponentProps<typeof Sidebar> & {
+   session: Session
+}
+
+export function AppSidebar({ session, ...props }: SidebarProps) {
    const pathName = usePathname()
 
    return (
@@ -135,7 +140,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             ))}
          </SidebarContent>
          <SidebarFooter>
-            <NavUser />
+            <NavUser session={session} />
          </SidebarFooter>
       </Sidebar>
    )

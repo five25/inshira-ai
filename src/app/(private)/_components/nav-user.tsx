@@ -1,7 +1,8 @@
 'use client'
 
-import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from 'lucide-react'
+import Form from 'next/form'
 
+import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
    DropdownMenu,
@@ -13,19 +14,16 @@ import {
    DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar'
-import Link from 'next/link'
+
+import logoutAction from '@/actions/auth/logout-action'
+import { Button } from '@/components/ui/button'
+import { Session } from 'next-auth'
 // import { useAuthStore } from '@/store/useStore'
 
-export function NavUser() {
+export function NavUser({ session }: { session: Session }) {
    const { isMobile } = useSidebar()
-   const { user, logout } = {
-      user: {
-         name: 'Fabrício Lima',
-         email: 'm@example.com',
-         avatar: '/avatars/shadcn.jpg'
-      },
-      logout: () => {}
-   } //useAuthStore()
+
+   const { user } = session
 
    return (
       <SidebarMenu>
@@ -37,8 +35,10 @@ export function NavUser() {
                      className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
                   >
                      <Avatar className='h-8 w-8 rounded-lg'>
-                        <AvatarImage src={user?.avatar} alt={user?.name} />
-                        <AvatarFallback className='rounded-lg'>FL</AvatarFallback>
+                        {/* <AvatarImage src={user?.image} alt={user?.name || 'User Avatar'} /> */}
+                        <AvatarFallback className='rounded-lg'>
+                           {user?.name?.substring(0, 2)?.toUpperCase()}
+                        </AvatarFallback>
                      </Avatar>
                      <div className='grid flex-1 text-left text-sm leading-tight'>
                         <span className='truncate font-semibold'>{user?.name}</span>
@@ -56,8 +56,10 @@ export function NavUser() {
                   <DropdownMenuLabel className='p-0 font-normal'>
                      <div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
                         <Avatar className='h-8 w-8 rounded-lg'>
-                           <AvatarImage src={user?.avatar} alt={user?.name} />
-                           <AvatarFallback className='rounded-lg'>FL</AvatarFallback>
+                           {/* <AvatarImage src={user?.avatar} alt={user?.name} /> */}
+                           <AvatarFallback className='rounded-lg'>
+                              {user?.name?.substring(0, 2)?.toUpperCase()}
+                           </AvatarFallback>
                         </Avatar>
                         <div className='grid flex-1 text-left text-sm leading-tight'>
                            <span className='truncate font-semibold'>{user?.name}</span>
@@ -88,12 +90,17 @@ export function NavUser() {
                      </DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
-                  <Link href='/' onClick={logout}>
-                     <DropdownMenuItem>
-                        <LogOut />
-                        Log out
+                  {/* <Link href='/' onClick={logout}>
+                     
+                  </Link> */}
+                  <Form action={logoutAction}>
+                     <DropdownMenuItem asChild>
+                        <Button className='w-full justify-start' variant='ghost'>
+                           <LogOut />
+                           Log out
+                        </Button>
                      </DropdownMenuItem>
-                  </Link>
+                  </Form>
                </DropdownMenuContent>
             </DropdownMenu>
          </SidebarMenuItem>

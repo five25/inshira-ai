@@ -1,11 +1,18 @@
-import { Separator } from '@/components/ui/separator'
+import { redirect } from 'next/navigation'
+import { auth } from '@/auth'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from './_components/app-sidebar'
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
+   const session = await auth()
+
+   if (!session) {
+      redirect('/login')
+   }
+
    return (
       <SidebarProvider>
-         <AppSidebar variant='inset' />
+         <AppSidebar variant='inset' session={session} />
          <SidebarInset>{children}</SidebarInset>
       </SidebarProvider>
    )

@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { motion, useScroll } from 'framer-motion'
 
-export function Header() {
+export function Header({ session }: { session: any }) {
    const { scrollY } = useScroll()
    const [isScrolled, setIsScrolled] = useState(false)
 
@@ -33,12 +33,21 @@ export function Header() {
                   <span className='text-2xl font-bold'>InshiraAI</span>
                </div>
                <div className='flex items-center space-x-4'>
-                  <Link href='/login'>
-                     <Button variant='ghost'>Login</Button>
-                  </Link>
-                  <Link href='/signup'>
-                     <Button>Get Started</Button>
-                  </Link>
+                  {session && (
+                     <Link href='/dashboard'>
+                        <Button>Acessar conta</Button>
+                     </Link>
+                  )}
+                  {!session && (
+                     <Link href='/login'>
+                        <Button variant='ghost'>Login</Button>
+                     </Link>
+                  )}
+                  {!session && (
+                     <Link href='/signup'>
+                        <Button>Get Started</Button>
+                     </Link>
+                  )}
                </div>
             </div>
          </nav>
