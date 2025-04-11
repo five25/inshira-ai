@@ -3,13 +3,13 @@ import { redirect } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { SignupForm } from './signup-form'
 import { auth } from '@/auth'
-import { BtHomeBack } from '../_components/bt-home-back'
+import { BtHomeBack } from '../../../components/shared/bt-home-back'
 
 export default async function SignupPage() {
    const session = await auth()
 
    if (session) {
-      return redirect('/dashboard')
+      return redirect('/workspace')
    }
 
    return (

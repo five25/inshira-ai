@@ -33,17 +33,17 @@ export function Header({ session }: { session: any }) {
                   <span className='text-2xl font-bold'>InshiraAI</span>
                </div>
                <div className='flex items-center space-x-4'>
-                  {session && (
-                     <Link href='/dashboard'>
+                  {session?.user && (
+                     <Link href='/workspace'>
                         <Button>Acessar conta</Button>
                      </Link>
                   )}
-                  {!session && (
+                  {!session?.user && (
                      <Link href='/login'>
                         <Button variant='ghost'>Login</Button>
                      </Link>
                   )}
-                  {!session && (
+                  {!session?.user && (
                      <Link href='/signup'>
                         <Button>Get Started</Button>
                      </Link>

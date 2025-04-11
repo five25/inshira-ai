@@ -1,20 +1,7 @@
-import { redirect } from 'next/navigation'
-
+import { BtHomeBack } from '@/components/shared/bt-home-back'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { LoginForm } from './login-form'
-import { auth } from '@/auth'
-import { Button } from '@/components/ui/button'
-import { ArrowLeft } from 'lucide-react'
-import Link from 'next/link'
-import { BtHomeBack } from '../../../components/shared/bt-home-back'
 
-export default async function Login() {
-   const session = await auth()
-
-   if (session) {
-      return redirect('/workspace')
-   }
-
+export function WorkspaceForm() {
    return (
       <div className='relative flex min-h-svh w-full items-center justify-center p-6 md:p-10'>
          <BtHomeBack />
@@ -25,9 +12,7 @@ export default async function Login() {
                      <CardTitle className='text-2xl'>Login</CardTitle>
                      <CardDescription>Enter your email below to login to your account</CardDescription>
                   </CardHeader>
-                  <CardContent>
-                     <LoginForm />
-                  </CardContent>
+                  <CardContent>{/* <LoginForm /> */}</CardContent>
                </Card>
             </div>
          </div>

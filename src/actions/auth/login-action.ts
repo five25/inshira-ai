@@ -16,10 +16,12 @@ export default async function loginAction(_prevState: any, formData: FormData) {
          email: data.email,
          password: data.password,
          redirect: true,
-         redirectTo: '/dashboard'
+         redirectTo: '/workspace'
       })
    } catch (error: any) {
       if (isRedirectError(error)) throw error
+
+      console.error(error)
 
       if (error.type === 'CredentialsSignin') {
          return { success: false, message: 'Dados de login incorretos' }

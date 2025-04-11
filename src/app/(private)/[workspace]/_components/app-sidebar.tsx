@@ -95,10 +95,9 @@ const data = {
 
 type SidebarProps = React.ComponentProps<typeof Sidebar> & {
    session: Session
-   workspace: string
 }
 
-export function AppSidebar({ session, workspace, ...props }: SidebarProps) {
+export function AppSidebar({ session, ...props }: SidebarProps) {
    const pathName = usePathname()
 
    return (
@@ -125,19 +124,16 @@ export function AppSidebar({ session, workspace, ...props }: SidebarProps) {
                   <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
                   <SidebarGroupContent>
                      <SidebarMenu>
-                        {item.items.map(item => {
-                           const url = `/${workspace}${item.url}`
-                           return (
-                              <SidebarMenuItem key={item.title}>
-                                 <SidebarMenuButton asChild tooltip={item.title} isActive={pathName === url}>
-                                    <Link href={url}>
-                                       {item.icon && <item.icon />}
-                                       <span>{item.title}</span>
-                                    </Link>
-                                 </SidebarMenuButton>
-                              </SidebarMenuItem>
-                           )
-                        })}
+                        {item.items.map(item => (
+                           <SidebarMenuItem key={item.title}>
+                              <SidebarMenuButton asChild tooltip={item.title} isActive={pathName === item.url}>
+                                 <Link href={item.url}>
+                                    {item.icon && <item.icon />}
+                                    <span>{item.title}</span>
+                                 </Link>
+                              </SidebarMenuButton>
+                           </SidebarMenuItem>
+                        ))}
                      </SidebarMenu>
                   </SidebarGroupContent>
                </SidebarGroup>

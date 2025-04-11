@@ -1,18 +1,19 @@
 import db from '@/lib/db'
 import { compare } from 'bcrypt-ts'
 
-type User = {
+type AuthUser = {
+   id: string
    name: string
    email: string
    password?: string
+   workspaces?: {
+      name: string
+   }[]
 }
 
-export async function findUserByCredentials(email: string, password: string): Promise<User | null> {
+export async function findUserByCredentials(email: string, password: string): Promise<AuthUser | null> {
    const user = await db.user.findFirst({
-      where: { email },
-      include: {
-         workspaces: true
-      }
+      where: { email }
    })
 
    if (!user) return null
@@ -22,6 +23,7 @@ export async function findUserByCredentials(email: string, password: string): Pr
    if (!passwordMatch) return null
 
    return {
+      id: user.id,
       name: user.name,
       email: user.email
    }
