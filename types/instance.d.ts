@@ -1,5 +1,5 @@
 interface instance {
    id?: string
    name?: string
-   state?: 'disconnected' | 'close' | 'connecting' | 'open' | undefined
+   status?: 'disconnected' | 'close' | 'connecting' | 'open' | undefined
 }

@@ -7,13 +7,14 @@ import {
    DialogTitle,
    DialogTrigger
 } from '@/components/ui/dialog'
-import { RefreshCw, Smartphone } from 'lucide-react'
-import { QRCodeForm } from './qr-code-form'
-import { RefreshButton } from './refresh-button'
-import { DisconnectButton } from './disconnecte-button'
+import { useInstanceStore } from '@/store/instance-store'
+import { Loader2, RefreshCw, Smartphone } from 'lucide-react'
+import Image from 'next/image'
 
-export function Toolbar({ instance }: { instance: instance }) {
-   const status = instance?.state || 'disconnected'
+export function Toolbar() {
+   const { instance, workspace, isLoading, qrcode, getQrCode, findByWorkspace, deleteByWorkspace } = useInstanceStore()
+
+   const status = instance?.status || 'disconnected'
 
    const color = {
       connecting: 'bg-yellow-500',
@@ -29,6 +30,10 @@ export function Toolbar({ instance }: { instance: instance }) {
       close: 'Desconectado'
    }
 
+   const handleGetQrCode = () => {
+      workspace && getQrCode(workspace)
+   }
+
    return (
       <div className='flex items-center justify-between'>
          <div className='flex items-center gap-2'>
@@ -37,14 +42,20 @@ export function Toolbar({ instance }: { instance: instance }) {
          </div>
 
          <div className='flex items-center gap-2'>
-            <RefreshButton />
+            <Button variant='outline' onClick={() => workspace && findByWorkspace(workspace)}>
+               <RefreshCw />
+            </Button>
 
-            {status === 'open' && <DisconnectButton />}
+            {status === 'open' && (
+               <Button variant='destructive' onClick={() => workspace && deleteByWorkspace(workspace)}>
+                  Desconectar
+               </Button>
+            )}
 
-            <Dialog>
+            <Dialog onOpenChange={() => qrcode && workspace && findByWorkspace(workspace)}>
                <DialogTrigger asChild>
                   {status !== 'open' && (
-                     <Button>
+                     <Button onClick={handleGetQrCode}>
                         <Smartphone />
                         Conectar Whatsapp
                      </Button>
@@ -55,7 +66,20 @@ export function Toolbar({ instance }: { instance: instance }) {
                      <DialogTitle>Conectar Whatsapp</DialogTitle>
                      <DialogDescription>Conecte seu whatsapp para começar a análise</DialogDescription>
                   </DialogHeader>
-                  <QRCodeForm />
+
+                  <div className='min-h-[200px] flex flex-col items-center justify-between'>
+                     <div className='flex-1 flex items-center'>
+                        {!qrcode || isLoading ? (
+                           <Loader2 size={50} className='animate-spin' />
+                        ) : (
+                           <Image src={qrcode || ''} alt='qr-code' width={500} height={500} priority quality={100} />
+                        )}
+                     </div>
+
+                     <Button disabled={!qrcode || isLoading} className='float-right mt-4' onClick={handleGetQrCode}>
+                        {isLoading ? 'Atualizando Qr Code...' : 'Atualizar Qr Code'}
+                     </Button>
+                  </div>
                </DialogContent>
             </Dialog>
          </div>

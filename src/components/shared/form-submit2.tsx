@@ -19,7 +19,7 @@ type FormSubmitProps = {
    }>
 }
 
-export function FormSubmit({ children, handleAction }: FormSubmitProps) {
+export function FormSubmit2({ children, handleAction }: FormSubmitProps) {
    const [state, dispatch, isPending] = useActionState(handleAction, null)
 
    const prevChildren = typeof children === 'function' ? children(isPending, state) : children
